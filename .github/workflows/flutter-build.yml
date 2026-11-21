@@ -204,6 +204,15 @@ jobs:
           name: ${{ matrix.job.arch == 'aarch64' && 'bridge-artifact-flutter-3.44' || 'bridge-artifact' }}
           path: ./
 
+      - name: Bake DcDesk server & key into config (DCNET)
+        shell: bash
+        run: |
+          f=libs/hbb_common/src/config.rs
+          sed -i 's#"rs-ny.rustdesk.com"#"relay.dcdesk.tr"#' "$f"
+          sed -i 's#OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=#sZdo2m1RmGglGgGjuq57qibrc4NHDsba4RdDzTps4RM=#' "$f"
+          echo "--- patched config.rs ---"
+          grep -nE 'RENDEZVOUS_SERVERS|RS_PUB_KEY' "$f"
+
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@ebc0426251bc40c7cd31162802432c68818ab8f0 # v2.0.9
         with:
