@@ -125,6 +125,9 @@ jobs:
           sed -i 's#RwLock::new("RustDesk".to_owned())#RwLock::new("DcDesk".to_owned())#' "$f"
           echo "--- patched config.rs ---"
           grep -nE 'RENDEZVOUS_SERVERS|RS_PUB_KEY|APP_NAME: RwLock' "$f"
+          # Marka: "kendi sunucunuza kurun" promo metnini tum dillerde kaldir
+          sed -i 's/("setup_server_tip", "[^"]*")/("setup_server_tip", "")/' src/lang/*.rs
+          echo "--- setup_server_tip blanked ---"; grep -h 'setup_server_tip' src/lang/en.rs
 
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@ebc0426251bc40c7cd31162802432c68818ab8f0 # v2.0.9
