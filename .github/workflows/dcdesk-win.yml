@@ -126,8 +126,13 @@ jobs:
           echo "--- patched config.rs ---"
           grep -nE 'RENDEZVOUS_SERVERS|RS_PUB_KEY|APP_NAME: RwLock' "$f"
           # Marka: "kendi sunucunuza kurun" promo metnini tum dillerde kaldir
-          sed -i 's/("setup_server_tip", "[^"]*")/("setup_server_tip", "")/' src/lang/*.rs
-          echo "--- setup_server_tip blanked ---"; grep -h 'setup_server_tip' src/lang/en.rs
+          # Marka: tum gorunur "RustDesk" metinleri -> DcDesk (tum diller)
+          sed -i 's/RustDesk/DcDesk/g' src/lang/*.rs
+          # using_public_server()=false -> setup_server_tip ve public-server uyarilari gizlenir
+          sed -i 's#crate::get_custom_rendezvous_server(get_option("custom-rendezvous-server")).is_empty()#false#' src/common.rs
+          # "Powered by RustDesk" (loadPowered) tamamen gizle
+          sed -i 's/Widget loadPowered(BuildContext context) {/Widget loadPowered(BuildContext context) { return SizedBox.shrink();/' flutter/lib/common.dart
+          echo "--- debrand patches applied ---"; grep -n 'fn using_public_server' src/common.rs
 
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@ebc0426251bc40c7cd31162802432c68818ab8f0 # v2.0.9

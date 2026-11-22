@@ -104,7 +104,9 @@ jobs:
           sed -i '' 's#"rs-ny.rustdesk.com"#"relay.dcdesk.tr"#' "$f"
           sed -i '' 's#OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=#sZdo2m1RmGglGgGjuq57qibrc4NHDsba4RdDzTps4RM=#' "$f"
           sed -i '' 's#RwLock::new("RustDesk".to_owned())#RwLock::new("DcDesk".to_owned())#' "$f"
-          sed -i '' 's/("setup_server_tip", "[^"]*")/("setup_server_tip", "")/' src/lang/*.rs
+          sed -i '' 's/RustDesk/DcDesk/g' src/lang/*.rs
+          sed -i '' 's#crate::get_custom_rendezvous_server(get_option("custom-rendezvous-server")).is_empty()#false#' src/common.rs
+          sed -i '' 's/Widget loadPowered(BuildContext context) {/Widget loadPowered(BuildContext context) { return SizedBox.shrink();/' flutter/lib/common.dart
           sed -i '' 's/PRODUCT_NAME = RustDesk/PRODUCT_NAME = DcDesk/' flutter/macos/Runner/Configs/AppInfo.xcconfig
           sed -i '' 's/RustDesk\.app/DcDesk.app/g' build.py
           grep -nE 'RENDEZVOUS_SERVERS|RS_PUB_KEY|APP_NAME: RwLock' "$f"
