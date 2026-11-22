@@ -288,6 +288,13 @@ jobs:
           # Opt-in, and its macOS tests run nowhere else.
           cargo test --locked --release -p clipboard --features unix-file-copy-paste
 
+      - name: Ad-hoc codesign (DCNET, sertifika yoksa Apple Silicon'da calissin)
+        if: env.MACOS_P12_BASE64 == null && env.UPLOAD_ARTIFACT == 'true'
+        run: |
+          APP=./flutter/build/macos/Build/Products/Release/DcDesk.app
+          codesign --force --deep --sign - "$APP"
+          codesign --verify --verbose=2 "$APP" || true
+
       - name: create unsigned dmg
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
