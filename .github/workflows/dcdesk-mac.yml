@@ -106,8 +106,10 @@ jobs:
           sed -i '' 's#RwLock::new("RustDesk".to_owned())#RwLock::new("DcDesk".to_owned())#' "$f"
           sed -i '' 's/("setup_server_tip", "[^"]*")/("setup_server_tip", "")/' src/lang/*.rs
           sed -i '' 's/PRODUCT_NAME = RustDesk/PRODUCT_NAME = DcDesk/' flutter/macos/Runner/Configs/AppInfo.xcconfig
+          sed -i '' 's/RustDesk\.app/DcDesk.app/g' build.py
           grep -nE 'RENDEZVOUS_SERVERS|RS_PUB_KEY|APP_NAME: RwLock' "$f"
           grep -n 'PRODUCT_NAME' flutter/macos/Runner/Configs/AppInfo.xcconfig
+          grep -c 'DcDesk.app' build.py
 
       - name: Import the codesign cert
         if: env.MACOS_P12_BASE64 != null
